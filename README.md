@@ -50,6 +50,12 @@ npm test          # the manifest against the daemon's rules, and the BUILT bundl
 npm run typecheck
 ```
 
+**Verify against the registry, not against the monorepo.** This repository was first checked with its
+`node_modules` symlinked at intentic's own packages, and everything passed — because those are the CURRENT API,
+not the published one. A clean `npm install` then failed on two things at once: a helper that only exists in the
+unreleased API, and an external the bundle needs but never declared. Both are the kind of break that reaches an
+installer and nobody else. `npm install` from a clean clone is the only check that means anything here.
+
 `dist/extension.js` **must be committed**: there is no build step at install time, so the sha you publish is
 literally the code that runs in the owner's browser. A stale `dist` publishes stale behaviour under a sha whose
 source says otherwise — which is why `test/activate.test.mjs` runs against `dist/`, never `src/`.
