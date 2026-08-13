@@ -44,35 +44,35 @@ currently says, that is what I expect. One is a version boundary; the other is a
 ## Building it
 
 ```sh
-npm install
-npm run build     # dist/extension.js — one file, host modules external
-npm test          # the manifest against the daemon's rules, and the BUILT bundle against a host stub
-npm run typecheck
+pnpm install     # pnpm, not npm — see pnpm-workspace.yaml for the build approvals it needs
+pnpm build       # dist/extension.js — one file, host modules external
+pnpm test        # the manifest against the daemon's rules, and the BUILT bundle against a host stub
+pnpm typecheck
 ```
 
 **Verify against the registry, not against the monorepo.** This repository was first checked with its
 `node_modules` symlinked at intentic's own packages, and everything passed — because those are the CURRENT API,
-not the published one. A clean `npm install` then failed on two things at once: a helper that only exists in the
+not the published one. A clean `pnpm install` then failed on two things at once: a helper that only exists in the
 unreleased API, and an external the bundle needs but never declared. Both are the kind of break that reaches an
-installer and nobody else. `npm install` from a clean clone is the only check that means anything here.
+installer and nobody else. `pnpm install` from a clean clone is the only check that means anything here.
 
 `dist/extension.js` **must be committed**: there is no build step at install time, so the sha you publish is
 literally the code that runs in the owner's browser. A stale `dist` publishes stale behaviour under a sha whose
 source says otherwise — which is why `test/activate.test.mjs` runs against `dist/`, never `src/`.
 
-## Not yet installable
+## One thing left
 
-The repository is live at [intentic/extension-logs](https://github.com/intentic/extension-logs) with the entry
-bundle committed, so the daemon could clone and validate it today. Two things still stand between that and
-somebody installing it, and neither is in this repository:
+`@intentic/extension-ui@1.176.3` is on npm, so this repository installs, builds, type-checks and tests from a
+clean clone with nothing borrowed from the monorepo. What remains is the **listing**: a registry entry names a
+repository at a full commit sha, and opening one is a pull request against
+[`intentic/registry`](https://github.com/intentic/registry). Until that merges there is nowhere for the app to
+discover this from, though it can already be installed by URL and sha.
 
-1. **`@intentic/extension-ui` is being published now.** It is in the host's release set and ready, but it had
-   never been published, and a trusted publisher can only be registered on a package that already exists — so
-   its first version has to be bootstrapped by hand before CI can own it. Five other packages in that release
-   set are in the same position. The dependency ranges here name the npm VERSION LINE (`^1.176.3`), which is
-   what every extension in this family declares — not `2.x`, which is the extension-API PROTOCOL version that
-   `engines.intentic` speaks to. Those two numbers look interchangeable and are not.
-2. **No listing.** A registry entry names a repository at a full commit sha; opening one is a pull request
-   against [`intentic/registry`](https://github.com/intentic/registry). Bumping `engines` later means opening
-   that pull request in the same sitting — every extension in this family broke silently once by fixing the code
-   and leaving the listing on the old commit.
+Two notes for whoever touches this next:
+
+- **The dependency ranges name the npm VERSION LINE** (`^1.176.3`), not `2.x`. `2.1.0` is the extension-API
+  PROTOCOL version, which is what `engines.intentic` speaks to. The two numbers look interchangeable and are
+  not — declared wrongly, npm can never resolve either dependency.
+- **Bumping `engines` means opening the listing pull request in the same sitting.** Every extension in this
+  family broke silently once by fixing the code and leaving the listing on the old commit: the loader refuses a
+  caret range on a major it has not heard of, so the failure is total and says nothing.
