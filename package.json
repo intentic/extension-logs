@@ -1,0 +1,25 @@
+{
+    "name": "intentic-logs",
+    "version": "1.0.0",
+    "description": "The sandbox's durable debug log surface \u2014 terminal captures, run logs and the daemon's own log, read from /history/logs",
+    "license": "MIT",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+        "test": "node --test test/manifest.test.mjs test/activate.test.mjs"
+    },
+    "dependencies": {
+        "@intentic/extension-api": "^2.1.0",
+        "@intentic/extension-ui": "^2.1.0"
+    },
+    "devDependencies": {
+        "@types/node": "^24.0.0",
+        "@vitejs/plugin-vue": "^6.0.1",
+        "typescript": "^5.9.3",
+        "vite": "^7.1.7",
+        "vue": "^3.5.22",
+        "vue-tsc": "^3.1.1"
+    }
+}

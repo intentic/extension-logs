@@ -1,0 +1,27 @@
+{
+    "$schema": "https://intentic.dev/intentic-extension.schema.json",
+    "publisher": "intentic",
+    "name": "logs",
+    "version": "1.0.0",
+    "category": "sandbox",
+    "icon": "file",
+    "engines": {
+        "intentic": "^2.0.0"
+    },
+    "entry": "dist/extension.js",
+    "permissions": {
+        "sandbox": [
+            "GET /logs",
+            "GET /logs/file"
+        ]
+    },
+    "contributes": {
+        "views": [
+            {
+                "id": "logs",
+                "label": "Logs",
+                "surface": "sandbox"
+            }
+        ]
+    }
+}
