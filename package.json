@@ -11,8 +11,8 @@
         "test": "node --test test/manifest.test.mjs test/activate.test.mjs"
     },
     "dependencies": {
-        "@intentic/extension-api": "^2.1.0",
-        "@intentic/extension-ui": "^2.1.0"
+        "@intentic/extension-api": "^1.176.3",
+        "@intentic/extension-ui": "^1.176.3"
     },
     "devDependencies": {
         "@types/node": "^24.0.0",
