@@ -11,3 +11,13 @@
 allowBuilds:
   esbuild: true
   vue-demi: true
+
+# TRANSIENT — safe to delete once @intentic/extension-ui@1.176.3 is a day old, and meaningless after that.
+#
+# pnpm 11.21 refuses any package published in the last 24 hours: a supply-chain measure against a compromised
+# release being pulled in the minutes after it lands. That version is the kit's FIRST EVER publish and this repo
+# depends on it, so for one day the hold blocks a clean `pnpm install` — and every script with it, since 11.21
+# re-verifies the lockfile before running one. Naming the exact version waives the hold for that single release
+# and nothing else; the policy stays on for everything.
+minimumReleaseAgeExclude:
+  - '@intentic/extension-ui@1.176.3'
