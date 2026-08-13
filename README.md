@@ -56,11 +56,15 @@ source says otherwise — which is why `test/activate.test.mjs` runs against `di
 
 ## Not yet installable
 
-Two things are still outstanding, and neither is in this repository:
+The repository is live at [intentic/extension-logs](https://github.com/intentic/extension-logs) with the entry
+bundle committed, so the daemon could clone and validate it today. Two things still stand between that and
+somebody installing it, and neither is in this repository:
 
-1. **`@intentic/extension-ui` is not on npm yet.** It publishes with the host's next release. Until then
-   `npm install` cannot resolve it from a clean machine — this repo has been built and tested against the packed
-   tarball instead.
+1. **`@intentic/extension-ui` is not on npm yet.** It is in the host's release set and ready, but it has never
+   been published, and a trusted publisher can only be registered on a package that already exists — so its
+   first version has to be bootstrapped from a maintainer machine before CI can own it. Five other packages in
+   that release set are in the same position. Until it lands, `npm install` cannot resolve it here from a clean
+   machine; this repo was built and tested against the packed tarball instead.
 2. **No listing.** A registry entry names a repository at a full commit sha; opening one is a pull request
    against [`intentic/registry`](https://github.com/intentic/registry). Bumping `engines` later means opening
    that pull request in the same sitting — every extension in this family broke silently once by fixing the code
